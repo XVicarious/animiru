@@ -1,5 +1,5 @@
 # animiru
-### アニミル
+### アニ見る
 #### Watch and track anime
 An anime watching application inspired by Tachiyomi
 
