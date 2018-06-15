@@ -1,8 +1,14 @@
 package us.xvicario.animiru;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +18,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    @BindView(R.id.testText) TextView testText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("Permsss", "doenst have perms");
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 0);
+        } else {
+            Log.d("Permsss", "has permissions!");
+        }
+
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -40,6 +66,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        try {
+            Object nines = new RetreiveAnimeTask().execute().get();
+            testText.setText(nines.toString());
+        } catch (Exception e) {
+            // todo: deal with this maybe
+        }
     }
 
     @Override
@@ -98,4 +131,18 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    static class RetreiveAnimeTask extends AsyncTask {
+
+        @Override
+        protected String doInBackground(Object[] objects) {
+            List<Anime> nineSearch = NineAnime.searchAnime("kill");
+            StringBuilder nines = new StringBuilder();
+            for (Anime anime : nineSearch) {
+                nines.append(anime.title).append("\n");
+            }
+            return nines.toString();
+        }
+    }
+
 }
