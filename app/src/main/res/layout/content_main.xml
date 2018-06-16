@@ -3,16 +3,9 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--<android.support.v4.view.ViewPager
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/anime_search_result"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/view_pager" />-->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|center_horizontal"
-        android:text="test0"
-        android:id="@+id/testText" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
