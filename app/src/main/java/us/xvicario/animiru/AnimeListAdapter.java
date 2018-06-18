@@ -1,6 +1,10 @@
 package us.xvicario.animiru;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,7 +53,17 @@ class AnimeListAdapter extends RecyclerView.Adapter<AnimeListAdapter.AnimeViewHo
         @Override
         public void onClick(View v) {
             final int position = getAdapterPosition();
-            new FetchAnimeTask().execute(anime.get(position));
+            Fragment animePageFragment = new AnimePageFragment();
+            FragmentManager fragmentManager = ((MainActivity) this.itemView.getContext()).getFragmentManager();
+            FragmentTransaction transaction;
+            transaction = fragmentManager.beginTransaction();
+            Bundle bundle = new Bundle();
+            bundle.putString("ANIME_URL", anime.get(position).url.toString());
+            animePageFragment.setArguments(bundle);
+            transaction.add(R.id.fragment_container, animePageFragment, "ANIME_EPISODES");
+            transaction.addToBackStack(null);
+            transaction.commit();
+            //new FetchAnimeTask().execute(anime.get(position));
         }
 
         private class FetchAnimeTask extends AsyncTask<Anime, Void, Void> {
