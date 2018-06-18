@@ -1,27 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/material_list_normal_padding_vertical"
+    android:layout_marginBottom="@dimen/material_list_normal_padding_vertical">
 
-    <ImageView
-        android:id="@+id/anime_poster"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/anime_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/material_card_media_area_framed_padding_horizontal"
-        android:layout_marginTop="@dimen/material_card_media_area_framed_padding_vertical"/>
-
-    <LinearLayout
-        android:layout_toEndOf="@+id/anime_poster"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/material_card_media_area_framed_padding_horizontal"
-        android:layout_marginLeft="@dimen/material_card_media_area_framed_padding_horizontal"
-        android:layout_marginTop="@dimen/material_card_media_area_framed_padding_vertical">
-
-        <TextView
-            android:id="@+id/anime_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+        android:layout_marginStart="@dimen/material_list_text_first_position_margin_start" />
 
 </RelativeLayout>

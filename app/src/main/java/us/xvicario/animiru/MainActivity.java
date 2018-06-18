@@ -1,35 +1,27 @@
 package us.xvicario.animiru;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.recyclerview.extensions.ListAdapter;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.view.View;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
@@ -39,9 +31,9 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.anime_search_result) RecyclerView animeResults;
-
-    ArrayList<Anime> animeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +50,17 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        animeList = new ArrayList<>();
+        animeResults.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        AnimeListAdapter animeListAdapter = new AnimeListAdapter();
+        animeResults.setAdapter(animeListAdapter);
 
-        animeResults.setAdapter(new AnimeListAdapter(animeList));
+        try {
+            animeListAdapter.anime = new RetreiveAnimeTask().execute().get();
+        } catch (ExecutionException e) {
+            // todo: deal with this
+        } catch (InterruptedException e) {
+            // todo: deal with this
+        }
 
         setSupportActionBar(toolbar);
 
@@ -73,13 +73,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
     }
@@ -136,57 +134,15 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    static class RetreiveAnimeTask extends AsyncTask {
+    static class RetreiveAnimeTask extends AsyncTask<Void, Void, ArrayList<Anime>> {
 
         @Override
-        protected String doInBackground(Object[] objects) {
-            List<Anime> nineSearch = NineAnime.searchAnime("kill");
-            StringBuilder nines = new StringBuilder();
-            for (Anime anime : nineSearch) {
-                nines.append(anime.title).append("\n");
-            }
-            return nines.toString();
-        }
-    }
-
-    class AnimeListAdapter extends RecyclerView.Adapter<AnimeListAdapter.AnimeViewHolder> {
-
-        ArrayList<Anime> anime;
-
-        AnimeListAdapter(ArrayList<Anime> anime) {
-            this.anime = anime;
-        }
-
-        @NonNull
-        @Override
-        public AnimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new AnimeViewHolder(parent);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull AnimeViewHolder holder, int position) {
-            holder.animeName.setText(animeList.get(position).title);
-        }
-
-        @Override
-        public int getItemCount() {
-            return anime.size();
-        }
-
-        class AnimeViewHolder extends RecyclerView.ViewHolder {
-
-            @BindView(R.id.anime_poster) ImageView animePoster;
-            @BindView(R.id.anime_title) TextView animeName;
-
-            AnimeViewHolder(View itemView) {
-                super(LayoutInflater.from(itemView.getContext()).inflate(R.layout.anime_result, (ViewGroup) itemView, false));
-                ButterKnife.bind(this.itemView);
-            }
+        protected ArrayList<Anime> doInBackground(Void... voids) {
+            return (ArrayList) NineAnime.searchAnime("kill");
         }
 
     }
