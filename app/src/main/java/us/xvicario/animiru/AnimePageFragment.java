@@ -106,11 +106,30 @@ public class AnimePageFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                final String url = VideoLinkExtractor.extractRapidvideo(anime.episodeMap.get(animeEpisodeCode.getText().toString()).get(0).toString());
-                Log.i("videoUrl", url);
-                Intent i = new Intent(Intent.ACTION_ALL_APPS);
-                i.setData(Uri.parse(url));
-                startActivity(i);
+                //final String url = VideoLinkExtractor.extractRapidvideo(anime.episodeMap.get(animeEpisodeCode.getText().toString()).get(0).toString());
+                //Intent i = new Intent(Intent.ACTION_ALL_APPS);
+                //i.setData(Uri.parse(url));
+                //startActivity(i);
+                String episodeCode = animeEpisodeCode.getText().toString();
+                String server = "33";
+                int paramKey = NineAnime.generateParamKey(animeEpisodeCode.getText().toString(), "33", 0);
+                int ts = Integer.valueOf(anime.ts);
+                NineAnime.fetchCdnLink(episodeCode, server, paramKey, ts);
+                //new FetchEpisodeLink().execute(anime.episodeMap.get(animeEpisodeCode.getText().toString()).get(0).toString());
+            }
+
+            private class FetchEpisodeLink extends AsyncTask<String, Void, String> {
+
+                @Override
+                protected String doInBackground(String... strings) {
+                    /*final String cdnUrl = NineAnime.fetchCdnLink(strings[0]);
+                    final String url = VideoLinkExtractor.extractRapidvideo(cdnUrl);
+                    Intent i = new Intent(Intent.ACTION_ALL_APPS);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);*/
+                    return null;
+                }
+
             }
 
         }

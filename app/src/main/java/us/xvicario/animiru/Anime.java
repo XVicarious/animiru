@@ -11,6 +11,7 @@ public class Anime {
     public String description;
     public URL url;
     public Map<String, ArrayList<URL>> episodeMap;
+    public String ts;
 
     public Anime(String title, String description, URL url) {
         this.title = title;
