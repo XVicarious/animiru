@@ -113,7 +113,7 @@ public class AnimePageFragment extends Fragment {
                 String episodeCode = animeEpisodeCode.getText().toString();
                 String server = "33";
                 int paramKey = NineAnime.generateParamKey(animeEpisodeCode.getText().toString(), "33", 0);
-                int ts = Integer.valueOf(anime.ts);
+                int ts = Integer.parseInt(anime.ts);
                 NineAnime.fetchCdnLink(episodeCode, server, paramKey, ts);
                 //new FetchEpisodeLink().execute(anime.episodeMap.get(animeEpisodeCode.getText().toString()).get(0).toString());
             }

@@ -15,7 +15,7 @@ public class VideoLinkExtractor {
         // todo: tack ?q={360p,480p,720p,1080p} to get a specific video quality
         // qualities are in a div, it might be hard to specifically select them
         String domain = removeWs(URI.create(url).getHost());
-        if (!domain.equalsIgnoreCase(RAPIDVIDEO_HOST)) {
+        if (!RAPIDVIDEO_HOST.equalsIgnoreCase(domain)) {
             throw new IllegalArgumentException(domain + " is not a proper RapidVideo url!");
         }
         try {

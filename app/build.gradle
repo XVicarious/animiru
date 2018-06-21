@@ -1,4 +1,26 @@
 apply plugin: 'com.android.application'
+apply plugin: 'pmd'
+apply plugin: 'checkstyle'
+apply plugin: 'findbugs'
+
+task findbugs(type: FindBugs, dependsOn: "assembleDebug", group: "verification") {
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "high"
+    //excludeFilter = new File("$configDir/findbugs/findbugs.filter.xml")
+    classes = files("${project.rootDir}/app/build/intermediates/classes")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "$project.buildDir/reports/findbugs.html"
+        }
+    }
+    classpath = files()
+}
 
 android {
     compileSdkVersion 27
@@ -19,6 +41,8 @@ android {
 }
 
 dependencies {
+    findbugsPlugins 'com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1'
+    findbugsPlugins 'com.mebigfatguy.fb-contrib:fb-contrib:7.0.5'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'

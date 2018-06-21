@@ -34,8 +34,8 @@ public class ExampleUnitTest {
             Anime anime = new Anime("High School DxD Hero", "description", new URL(hsdxdhero));
             NineAnime.fetchAnime(anime);
             String code = (String) anime.episodeMap.keySet().toArray()[0];
-            int paramKey = NineAnime.generateParamKey(code, "33", Integer.valueOf(anime.ts));
-            String url = NineAnime.fetchCdnLink(code, "33", paramKey, Integer.valueOf(anime.ts));
+            int paramKey = NineAnime.generateParamKey(code, "33", Integer.parseInt(anime.ts));
+            String url = NineAnime.fetchCdnLink(code, "33", paramKey, Integer.parseInt(anime.ts));
             System.out.println(url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
