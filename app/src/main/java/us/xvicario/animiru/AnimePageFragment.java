@@ -1,15 +1,12 @@
 package us.xvicario.animiru;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +43,7 @@ public class AnimePageFragment extends Fragment {
         protected Anime doInBackground(String... strings) {
             Anime anime;
             try {
-                anime = new Anime("anime title", "description", new URL(strings[0]));
+                anime = new Anime(new URL(strings[0]));
                 NineAnime.fetchAnime(anime);
                 return anime;
             } catch (MalformedURLException e) {
@@ -57,7 +54,7 @@ public class AnimePageFragment extends Fragment {
 
     }
 
-    class EpisodeAdapter extends RecyclerView.Adapter {
+    static class EpisodeAdapter extends RecyclerView.Adapter {
 
         private Anime anime;
 
@@ -90,14 +87,14 @@ public class AnimePageFragment extends Fragment {
             return anime.episodeMap.size();
         }
 
-        class EpisodeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        static class EpisodeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
             int lastUrlIndex = -1;
 
             TextView animeEpisodeCode;
             TextView animeSourceCount;
 
-            public EpisodeViewHolder(ViewGroup viewGroup) {
+            EpisodeViewHolder(ViewGroup viewGroup) {
                 super(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.anime_episode, viewGroup, false));
                 animeEpisodeCode = itemView.findViewById(R.id.anime_episode_code);
                 animeSourceCount = itemView.findViewById(R.id.anime_source_count);
@@ -106,30 +103,7 @@ public class AnimePageFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                //final String url = VideoLinkExtractor.extractRapidvideo(anime.episodeMap.get(animeEpisodeCode.getText().toString()).get(0).toString());
-                //Intent i = new Intent(Intent.ACTION_ALL_APPS);
-                //i.setData(Uri.parse(url));
-                //startActivity(i);
-                String episodeCode = animeEpisodeCode.getText().toString();
-                String server = "33";
-                int paramKey = NineAnime.generateParamKey(animeEpisodeCode.getText().toString(), "33", 0);
-                int ts = Integer.parseInt(anime.ts);
-                NineAnime.fetchCdnLink(episodeCode, server, paramKey, ts);
-                //new FetchEpisodeLink().execute(anime.episodeMap.get(animeEpisodeCode.getText().toString()).get(0).toString());
-            }
-
-            private class FetchEpisodeLink extends AsyncTask<String, Void, String> {
-
-                @Override
-                protected String doInBackground(String... strings) {
-                    /*final String cdnUrl = NineAnime.fetchCdnLink(strings[0]);
-                    final String url = VideoLinkExtractor.extractRapidvideo(cdnUrl);
-                    Intent i = new Intent(Intent.ACTION_ALL_APPS);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);*/
-                    return null;
-                }
-
+                // todo: make clicks work
             }
 
         }

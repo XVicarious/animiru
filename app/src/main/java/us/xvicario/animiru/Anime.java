@@ -20,6 +20,10 @@ public class Anime {
         this.episodeMap = new HashMap<>();
     }
 
+    public Anime(URL url) {
+        this.url = url;
+    }
+
     public void addEpisode(String episodeCode, URL url) {
         if (!episodeMap.containsKey(episodeCode)) {
             ArrayList<URL> episodeUrls = new ArrayList<>();

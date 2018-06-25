@@ -1,8 +1,9 @@
 package us.xvicario.animiru;
 
-import android.util.Log;
+import android.media.Image;
 
 import com.google.common.primitives.Chars;
+import com.nytimes.android.external.store3.base.Fetcher;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,19 +16,34 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+
+import javax.annotation.Nonnull;
+
+import io.reactivex.Single;
 
 public class NineAnime implements AnimeSource {
 
     public static final String SOURCE = "9anime";
 
-    private final static String baseUrl = "https://9anime.is/";
-    private final static String searchUrl = baseUrl + "search?keyword=";
-    private final static String filterUrl = baseUrl + "filter";
+    private static final String baseUrl = "https://9anime.is/";
+    private static final String searchUrl = baseUrl + "search?keyword=";
+    private static final String filterUrl = baseUrl + "filter";
 
-    public static List<Anime> searchAnime(String keyword) {
+    //private final Store<Image, BarCode> posterStore;
+
+    NineAnime() {
+        Fetcher<Image, String> fetcher = new Fetcher<Image, String>() {
+            @Nonnull
+            @Override
+            public Single<Image> fetch(@Nonnull String s) {
+                return null;
+            }
+        };
+    }
+
+    public static ArrayList searchAnime(String keyword) {
         ArrayList<Anime> animeList = new ArrayList<>();
         String completeSearch = searchUrl;
         try {
@@ -106,7 +122,7 @@ public class NineAnime implements AnimeSource {
         int i = 0;
         List<Character> charList = Chars.asList(t.toCharArray());
         ListIterator<Character> it = charList.listIterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             i += (int) it.next() + it.nextIndex();
         }
         return i;
@@ -126,46 +142,11 @@ public class NineAnime implements AnimeSource {
     }
 
     public enum Genres {
-        ACTION,
-        ADVENTURE,
-        CARS,
-        COMEDY,
-        DEMENTIA,
-        DEMONS,
-        DRAMA,
-        ECCHI,
-        FANTASY,
-        GAME,
-        HAREM,
-        JOSEI,
-        KIDS,
-        MAGIC,
-        MARTIAL_ARTS,
-        MECHA,
-        MILITARY,
-        MUSIC,
-        MYSTERY,
-        PARODY,
-        POLICE,
-        PSYCHOLOGICAL,
-        ROMANCE,
-        SAMURAI,
-        SCHOOL,
-        SCIFI,
-        SEINEN,
-        SHOUJO,
-        SHOUJO_AI,
-        SHOUNEN,
-        SHOUNEN_AI,
-        SLICE_OF_LIFE,
-        SPACE,
-        SPORTS,
-        SUPER_POWER,
-        SUPERNATURAL,
-        THRILLER,
-        VAMPIRE,
-        YAOI,
-        YURI
+        ACTION, ADVENTURE, CARS, COMEDY, DEMENTIA, DEMONS, DRAMA, ECCHI, FANTASY, GAME, HAREM,
+        JOSEI, KIDS, MAGIC, MARTIAL_ARTS, MECHA, MILITARY, MUSIC, MYSTERY, PARODY, POLICE,
+        PSYCHOLOGICAL, ROMANCE, SAMURAI, SCHOOL, SCIFI, SEINEN, SHOUJO, SHOUJO_AI, SHOUNEN,
+        SHOUNEN_AI, SLICE_OF_LIFE, SPACE, SPORTS, SUPER_POWER, SUPERNATURAL, THRILLER, VAMPIRE,
+        YAOI, YURI
     }
 
 }

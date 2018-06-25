@@ -1,8 +1,6 @@
 package us.xvicario.animiru;
 
-import android.util.Log;
-
-import com.google.common.primitives.Chars;
+import com.google.common.collect.ImmutableList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,22 +9,22 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 
 public class GoGoAnime implements AnimeSource {
 
     public static final String SOURCE = "GoGoAnime";
-    public static final List<String> SERVERS = Arrays.asList("Vidstreaming", "Vidcdn", "Streamango",
-            "Estream", "Oload", "OpenUpload", "Thevideo", "Mp4Upload", "YourUpload", "Bestream");
+    public static final ImmutableList<String> SERVERS =
+            new ImmutableList.Builder<String>().addAll(Arrays.asList(
+                    "Vidstreaming", "Vidcdn", "Streamango", "Estream", "Oload", "OpenUpload",
+                    "Thevideo", "Mp4Upload", "YourUpload", "Bestream")).build();
 
-    private final static String baseUrl = "https://www.gogoanime.in/";
-    private final static String searchUrl = baseUrl + "search.html?keyword=";
+    private static final String baseUrl = "https://www.gogoanime.in/";
+    private static final String searchUrl = baseUrl + "search.html?keyword=";
 
     public static List<Anime> searchAnime(String keyword) {
         ArrayList<Anime> animeList = new ArrayList<>();

@@ -118,16 +118,16 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        //int id = item.getItemId();
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    static class RetreiveAnimeTask extends AsyncTask<Void, Void, ArrayList<Anime>> {
+    static class RetreiveAnimeTask extends AsyncTask<Void, Void, ArrayList> {
 
         @Override
-        protected ArrayList<Anime> doInBackground(Void... voids) {
+        protected ArrayList doInBackground(Void... voids) {
             return (ArrayList) NineAnime.searchAnime("kill");
         }
 

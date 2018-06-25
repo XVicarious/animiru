@@ -36,6 +36,15 @@ class AnimeListAdapter extends RecyclerView.Adapter<AnimeListAdapter.AnimeViewHo
         return anime.size();
     }
 
+    static class AnimeSearchTask extends AsyncTask<String, Void, ArrayList> {
+
+        @Override
+        protected ArrayList doInBackground(String... strings) {
+            return NineAnime.searchAnime(strings[0]);
+        }
+
+    }
+
     class AnimeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //@BindView(R.id.anime_poster)
